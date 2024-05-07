@@ -33,11 +33,14 @@
                 <p id="year"></p>
                 <p id="university"></p>
 
+                <h1 class="educs">Highschool</h1>
+                <ul id="educs"></ul>
+
                 <h1 class="skills">Skills</h1>
                 <ul id="skills"></ul>
 
                 <h1 class="experience">Experience</h1>
-                <p id="experience"></p> <!-- Corrected closing tag -->
+                <p id="experience"></p> 
 
                 <h1 class="awards">Awards and Achievements</h1>
                 <ul id="awards"></ul>
@@ -57,6 +60,13 @@
             document.getElementById('degree').innerText = data.education.degree;
             document.getElementById('year').innerText = data.education.year;
             document.getElementById('university').innerText = data.education.university;
+
+            const educsList = document.getElementById('educs');
+            data.educs.forEach(educ => {
+                const li = document.createElement('li');
+                li.innerText = educ;
+                educsList.appendChild(li);
+            });
 
             const skillsList = document.getElementById('skills');
             data.skills.forEach(skill => {
