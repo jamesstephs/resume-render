@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
@@ -16,12 +16,7 @@
                 </div>
                 <div class="Info1"> <!-- Added Info1 class here -->
                     <h1>Contact Information</h1>
-                    <p id="name"></p>
-                    <p id="address"></p>
-                    <p id="phoneNumber"></p>
-                    <p id="email"></p>
-                    <p id="birthdate"></p>
-                    <p id="sex"></p>
+                    <div id="personalInfo"></div>
                 </div>
             </div>
             
@@ -29,83 +24,125 @@
         <div class="right_side">
             <div class="Info2">
                 <h1>Education</h1>
-                <p id="degree"></p>
-                <p id="year"></p>
-                <p id="university"></p>
+                <div id="education"></div>
 
                 <h1 class="educs">Highschool</h1>
-                <ul id="highschools"></ul> <!-- Changed id to 'highschools' -->
+                <div id="highschool"></div>
 
                 <h1 class="skills">Skills</h1>
-                <ul id="skills"></ul>
+                <div id="skills"></div>
 
                 <h1 class="experience">Experience</h1>
-                <ul id="experience"></ul> <!-- Changed id to 'experience' -->
+                <div id="experience"></div>
 
                 <h1 class="awards">Awards and Achievements</h1>
-                <ul id="awards"></ul>
+                <div id="awards"></div>
             </div>
         </div>
     </div>
 
     <script>
-        fetch('https://render-webservice-0a9z.onrender.com/')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            // Display Personal Information
-            document.getElementById('name').innerText = data.personalInfo.name;
-            document.getElementById('address').innerText = data.personalInfo.address;
-            document.getElementById('phoneNumber').innerText = data.personalInfo.phoneNumber;
-            document.getElementById('email').innerText = data.personalInfo.email;
-            document.getElementById('birthdate').innerText = data.personalInfo.birthdate;
-            document.getElementById('sex').innerText = data.personalInfo.sex;
+      document.addEventListener("DOMContentLoaded", function () {
+        const apiUrl = "https://render-webservice-0a9z.onrender.com";
 
-            // Display Education
-            const education = data.education[0];
-            document.getElementById('degree').innerText = education.degree;
-            document.getElementById('year').innerText = education.year;
-            document.getElementById('university').innerText = education.university;
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            displayPersonalInfo(data.personalInfo);
+            displayHighschools(data.highschools);
+            displaySkills(data.skills);
+            displayEducation(data.education);
+            displayAward(data.awards);
+            displayExperience(data.experience);
+          })
+          .catch((error) => console.error("Error fetching data:", error));
+      });
 
-            // Display High Schools
-            const highschoolsList = document.getElementById('highschools');
-            data.highschools.forEach(highschool => {
-                const li = document.createElement('li');
-                li.innerText = `${highschool.year_level}, ${highschool.year_duration}, ${highschool.school}`;
-                highschoolsList.appendChild(li);
-            });
-
-            // Display Skills
-            const skillsList = document.getElementById('skills');
-            data.skills[0].description.forEach(skill => {
-                const li = document.createElement('li');
-                li.innerText = skill;
-                skillsList.appendChild(li);
-            });
-
-            // Display Experience
-            const experienceList = document.getElementById('experience');
-            data.experience[0].description.forEach(exp => {
-                const li = document.createElement('li');
-                li.innerText = exp;
-                experienceList.appendChild(li);
-            });
-
-            // Display Awards
-            const awardsList = document.getElementById('awards');
-            data.awards[0].description.forEach(award => {
-                const li = document.createElement('li');
-                li.innerText = award;
-                awardsList.appendChild(li);
-            });
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
+      function displayPersonalInfo(info) {
+        const container = document.getElementById("personalInfo");
+        info.forEach((item) => {
+          const div = document.createElement("div");
+          div.innerHTML =
+            "Name: " +
+            item.name +
+            "<br>" +
+            "Birthdate: " +
+            item.birthdate +
+            "<br>" +
+            "Gender: " +
+            item.sex +
+            "<br>" +
+            "Contact No: " +
+            item.phoneNumber +
+            "<br>" +
+            "Address: " +
+            item.address +
+            "<br>" +
+            "Email: " +
+            item.email;
+          container.appendChild(div);
         });
+      }
+
+      function displayHighschools(highschools) {
+        const container = document.getElementById("highschool");
+        highschools.forEach((item) => {
+          const div = document.createElement("div");
+          div.innerHTML =
+            item.year_level +
+            "<br>" +
+            "Birth " +
+            item.year_duration +
+            "<br>" +
+            "Ge " +
+            item.school;
+          container.appendChild(div);
+        });
+      }
+
+      function displaySkills(skills) {
+        const container = document.getElementById("skills");
+        skills.forEach((item) => {
+          const div = document.createElement("div");
+          div.textContent = item.description.join(", ");
+          container.appendChild(div);
+        });
+      }
+
+      function displayEducation(education) {
+        const container = document.getElementById("education");
+        education.forEach((item) => {
+          const div = document.createElement("div");
+          div.innerHTML =
+            "Degree: " +
+            item.degree +
+            "<br>" +
+            "School: " +
+            item.university +
+            "<br>" +
+            "Year: " +
+            item.year;
+          container.appendChild(div);
+        });
+      }
+
+      function displayAward(award) {
+        const container = document.getElementById("awards");
+        award.forEach((item) => {
+          const div = document.createElement("div");
+          div.textContent = item.description;
+          container.appendChild(div);
+        });
+      }
+
+      function displayExperience(experience) {
+        const container = document.getElementById("experience");
+        experience.forEach((item) => {
+          const div = document.createElement("div");
+          div.textContent = item.description;
+          container.appendChild(div);
+        });
+      }
     </script>
-</body>
+  </body>
 </html>
